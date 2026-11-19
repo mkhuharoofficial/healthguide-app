@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#183B2C" id="metaTheme">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<title>Health Guide &amp; Wellness</title>
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<div id="app">
+
+  <header class="appbar">
+    <button class="icon-btn" id="menuBtn" aria-label="Menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <div class="brand">
+      <div class="mark"><img src="img/logo.png" alt="App logo"></div>
+      <div class="brand-wrap">
+        <div class="brand-text" data-i18n="appName">Health Guide &amp; Wellness</div>
+        <div class="brand-sub" data-i18n="appTagline">Your Smart Health Assistant</div>
+      </div>
+    </div>
+    <select id="langSelect" aria-label="Language">
+      <option value="en">English</option>
+      <option value="ur">اردو</option>
+      <option value="sd">سنڌي</option>
+    </select>
+    <button class="icon-btn" id="themeBtn" aria-label="Toggle dark mode">
+      <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1111.2 3 7 7 0 0021 12.8z"/></svg>
+    </button>
+  </header>
+
+  <div class="scrim" id="scrim"></div>
+  <nav class="drawer" id="drawer">
+    <div class="drawer-head">
+      <div class="mark"><img src="img/logo.png" alt="App logo"></div>
+      <div>
+        <h2 data-i18n="appName">Health Guide &amp; Wellness</h2>
+        <p data-i18n="appTagline">Your Smart Health Assistant</p>
+      </div>
+      <button class="close" id="drawerClose" aria-label="Close">&times;</button>
+    </div>
+    <div class="drawer-nav" id="drawerNav"></div>
+    <div class="drawer-foot" data-i18n="madeBy">Made with ❤ by Muhammad Khan Khuharo</div>
+  </nav>
+
+  <main>
+
+    <!-- DASHBOARD -->
+    <section class="screen active" id="screen-dashboard">
+      <div class="hero">
+        <div class="hero-top">
+          <span class="tag">✓ <span data-i18n="heroTag">Works online &amp; offline</span></span>
+          <span class="net-pill"><i></i><span>Online</span></span>
+        </div>
+        <h1 data-i18n="appName">Health Guide &amp; Wellness</h1>
+        <p data-i18n="heroDesc"></p>
+        <div class="hero-actions">
+          <button class="btn btn-light" data-nav="medicine"><span data-i18n="navMedicine">Medicine Reminders</span></button>
+          <button class="btn btn-coral" data-nav="sos"><span data-i18n="navSOS">Emergency SOS</span></button>
+        </div>
+      </div>
+
+      <div class="stats">
+        <div class="stat"><div class="stat-n" id="statMeds">0/0</div><div class="stat-l" data-i18n="todayMeds">Medicines today</div></div>
+        <div class="stat"><div class="stat-n" id="statWater">0/8</div><div class="stat-l" data-i18n="todayWater">Water today</div></div>
+      </div>
+
+      <div class="next-card">
+        <div class="next-ic" id="nextIc"></div>
+        <div>
+          <div class="next-l" data-i18n="nextReminder">Next reminder</div>
+          <div class="next-t" id="nextText"></div>
+        </div>
+      </div>
+
+      <div class="tipday">
+        <div class="tipday-l" data-i18n="tipOfDay">Tip of the day</div>
+        <div class="tipday-t" id="tipDayText"></div>
+      </div>
+
+      <div id="dashboardCards"></div>
+    </section>
+
+    <!-- MEDICINE -->
+    <section class="screen" id="screen-medicine" data-title="navMedicine" data-desc="medDesc">
+      <div class="progress-card" id="medProgress" hidden>
+        <div class="row-between"><span id="medProgText"></span></div>
+        <div class="bar"><div class="bar-fill" id="medProgBar"></div></div>
+      </div>
+
+      <div class="card" id="medForm">
+        <h3 class="form-title" id="medFormTitle" data-i18n="addMedTitle">Add medicine reminder</h3>
+        <input type="text" class="field" id="medName" data-i18n-ph="medNamePh" placeholder="Medicine name" autocomplete="off">
+        <input type="text" class="field" id="medDose" data-i18n-ph="dosePh" placeholder="Dose (optional)" autocomplete="off">
+        <label class="lbl" data-i18n="timeLbl">Time</label>
+        <input type="time" class="field" id="medTime">
+        <label class="lbl" data-i18n="repeatLbl">Repeat</label>
+        <div class="chips" id="medDays"></div>
+        <label class="lbl" data-i18n="soundLbl">Alarm sound</label>
+        <div id="medSoundPicker"></div>
+        <div class="form-actions">
+          <button class="btn btn-primary" id="medSaveBtn" data-i18n="addBtn">Add</button>
+          <button class="btn btn-ghost" id="medCancelBtn" data-i18n="cancel" hidden>Cancel</button>
+        </div>
+      </div>
+      <div id="medList"></div>
+    </section>
+
+    <!-- WATER -->
+    <section class="screen" id="screen-water" data-title="navWater" data-desc="waterDesc">
+      <div class="water-hero">
+        <div class="water-ring" id="waterRing"><div class="ring-txt"><span class="n" id="waterCount">0</span><span class="u" id="waterUnit"></span></div></div>
+        <div class="water-controls">
+          <button class="round-btn round-minus" id="waterMinus" aria-label="-1">−</button>
+          <button class="round-btn round-plus" id="waterPlus" aria-label="+1">+</button>
+        </div>
+        <div class="goal-row">
+          <span data-i18n="dailyGoal">Daily goal:</span>
+          <input type="text" inputmode="numeric" id="goalInput" class="field goal-input" value="8">
+          <span data-i18n="cups">cups</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="row-between">
+          <h3 class="form-title nomargin" data-i18n="waterRemTitle">Water reminders</h3>
+          <label class="switch"><input type="checkbox" id="wrEnabled"><span class="slider"></span></label>
+        </div>
+        <div class="grid2">
+          <div><label class="lbl" data-i18n="fromLbl">From</label><input type="time" class="field" id="wrStart"></div>
+          <div><label class="lbl" data-i18n="toLbl">To</label><input type="time" class="field" id="wrEnd"></div>
+        </div>
+        <label class="lbl" data-i18n="everyLbl">Remind every</label>
+        <select class="field" id="wrEvery"></select>
+        <div class="slots-wrap">
+          <div class="lbl" data-i18n="remindersAt">Reminders at</div>
+          <div class="slots" id="wrSlots"></div>
+        </div>
+        <label class="lbl" data-i18n="soundLbl">Alarm sound</label>
+        <div id="wrSoundPicker"></div>
+      </div>
+    </section>
+
+    <!-- TIPS -->
+    <section class="screen" id="screen-tips" data-title="navTips" data-desc="tipsDesc">
+      <div class="tip-card">
+        <div class="tip-cat" id="tipCat"></div>
+        <p class="tip-quote" id="tipText"></p>
+      </div>
+      <button class="btn btn-primary" id="nextTipBtn" data-i18n="anotherTip">Show another tip</button>
+    </section>
+
+    <!-- DOCTOR -->
+    <section class="screen" id="screen-doctor" data-title="navDoctor" data-desc="doctorDesc">
+      <div class="search-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <input type="text" class="field" id="docSearch" data-i18n-ph="docSearchPh" placeholder="Search specialty or condition">
+      </div>
+      <div id="docList"></div>
+      <p class="disclaimer" data-i18n="disclaimer"></p>
+    </section>
+
+    <!-- FIRST AID -->
+    <section class="screen" id="screen-firstaid" data-title="navFirstAid" data-desc="firstAidDesc">
+      <div id="accList"></div>
+      <p class="disclaimer" data-i18n="disclaimer"></p>
+    </section>
+
+    <!-- SOS -->
+    <section class="screen" id="screen-sos" data-title="navSOS" data-desc="sosDesc">
+      <div id="sosList"></div>
+      <div class="card">
+        <h3 class="form-title" data-i18n="addContactTitle">Add a personal emergency contact</h3>
+        <input type="text" class="field" id="contactName" data-i18n-ph="contactNamePh" placeholder="Name" autocomplete="off">
+        <div class="form-row">
+          <input type="text" inputmode="tel" class="field nomargin" id="contactNumber" data-i18n-ph="contactNumberPh" placeholder="Phone number" autocomplete="off">
+          <button class="btn btn-primary fit" id="addContactBtn" data-i18n="addBtn">Add</button>
+        </div>
+      </div>
+      <div id="customContactList"></div>
+      <div class="loc-box">
+        <div data-i18n="shareLocDesc">Share your coordinates with responders</div>
+        <button class="btn btn-ghost" id="locBtn" data-i18n="getLocation">Get my location</button>
+        <code id="locOut" hidden></code>
+      </div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section class="screen" id="screen-settings" data-title="navSettings" data-desc="settingsDesc">
+      <div class="card">
+        <label class="lbl first" data-i18n="settingsSnooze">Snooze time</label>
+        <select class="field" id="snoozeSel">
+          <option value="5">5</option><option value="10">10</option><option value="15">15</option>
+        </select>
+        <div class="row-between setting-row">
+          <div><div class="s-title" data-i18n="vibration">Vibration</div><div class="s-desc" data-i18n="vibrationDesc"></div></div>
+          <label class="switch"><input type="checkbox" id="vibSwitch"><span class="slider"></span></label>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="row-between setting-row first">
+          <div><div class="s-title" data-i18n="dailyTipNotif">Daily health tip</div><div class="s-desc" data-i18n="dailyTipDesc"></div></div>
+          <label class="switch"><input type="checkbox" id="dtEnabled"><span class="slider"></span></label>
+        </div>
+        <label class="lbl" data-i18n="tipTimeLbl">Tip time</label>
+        <input type="time" class="field nomargin" id="dtTime">
+      </div>
+
+      <div class="card">
+        <button class="btn btn-primary" id="testAlarmBtn" data-i18n="testAlarm">Test alarm</button>
+        <button class="btn btn-ghost block" id="notifBtn" data-i18n="enableNotif">Allow notifications</button>
+        <div class="s-desc center" id="notifStatus"></div>
+        <div id="exactBox" hidden>
+          <button class="btn btn-ghost block" id="exactBtn" data-i18n="enableExact">Allow exact alarms</button>
+          <div class="s-desc center" data-i18n="exactDesc"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 class="form-title" data-i18n="statusTitle">App status</h3>
+        <div class="row-between status-row"><span data-i18n="connection">Connection</span><span class="net-pill"><i></i><span>Online</span></span></div>
+        <div class="row-between status-row"><span data-i18n="appMode">Mode</span><b id="modeText"></b></div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Full-screen alarm -->
+  <div class="alarm-modal" id="alarmModal" role="alertdialog" aria-live="assertive">
+    <div class="alarm-box">
+      <div class="alarm-pulse">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 01-3.4 0"/></svg>
+      </div>
+      <div class="alarm-time" id="alarmTime"></div>
+      <div class="alarm-title" id="alarmTitle"></div>
+      <div class="alarm-body" id="alarmBody"></div>
+      <button class="btn alarm-main" id="alarmDone"></button>
+      <div class="alarm-row">
+        <button class="btn alarm-sec" id="alarmSnooze"></button>
+        <button class="btn alarm-sec" id="alarmDismiss"></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status"></div>
+  <nav class="bottomnav" id="bottomNav"></nav>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
